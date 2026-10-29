@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Intelligence — Perplexity 3</title>
+    <meta name="description" content="Business Intelligence Dashboard powered by AI - Finance, Marketing, Legal, HR, Operations, Sales insights.">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="business-mode">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar biz-sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <a href="/" class="back-home-btn" title="Back to Search">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <div class="logo">
+                    <span><i class="fa-solid fa-briefcase"></i> BizMode</span>
+                </div>
+            </div>
+
+            <!-- Live News -->
+            <div class="biz-news-section">
+                <div class="sidebar-heading"><i class="fa-solid fa-newspaper"></i> Live Business News</div>
+                <div id="news-list" class="biz-news-list">
+                    <div class="biz-news-loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading news...</div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="biz-stats-section">
+                <div class="sidebar-heading"><i class="fa-solid fa-chart-pie"></i> Your Stats</div>
+                <div id="stats-panel" class="biz-stats-panel">
+                    <div class="stat-card"><div class="stat-value" id="stat-searches">0</div><div class="stat-label">Searches</div></div>
+                    <div class="stat-card"><div class="stat-value" id="stat-field">—</div><div class="stat-label">Top Field</div></div>
+                    <div class="stat-card"><div class="stat-value" id="stat-reports">0</div><div class="stat-label">Reports</div></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content biz-main">
+            <header class="top-nav biz-topnav">
+                <div class="biz-nav-title">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Business Intelligence</span>
+                </div>
+                <div class="nav-right">
+                    <a href="/" class="biz-back-link"><i class="fa-solid fa-house"></i> Back to Search</a>
+                </div>
+            </header>
+
+            <!-- Dashboard Home -->
+            <section class="biz-dashboard" id="biz-dashboard">
+                <h1 class="biz-greeting">Business Intelligence Hub</h1>
+                <p class="biz-sub">AI-powered insights across 6 key business domains</p>
+
+                <div class="biz-cards-grid">
+                    <div class="biz-card" data-field="Finance" onclick="showField('Finance')">
+                        <div class="biz-card-icon"><i class="fa-solid fa-coins"></i></div>
+                        <h3>Finance</h3>
+                        <p>Revenue, budgeting, investments, financial modeling & cash flow analysis</p>
+                    </div>
+                    <div class="biz-card" data-field="Marketing" onclick="showField('Marketing')">
+                        <div class="biz-card-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                        <h3>Marketing</h3>
+                        <p>Brand strategy, digital campaigns, SEO, social media & growth hacking</p>
+                    </div>
+                    <div class="biz-card" data-field="Legal" onclick="showField('Legal')">
+                        <div class="biz-card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                        <h3>Legal</h3>
+                        <p>Compliance, contracts, IP protection, regulations & corporate governance</p>
+                    </div>
+                    <div class="biz-card" data-field="HR & Recruitment" onclick="showField('HR & Recruitment')">
+                        <div class="biz-card-icon"><i class="fa-solid fa-users"></i></div>
+                        <h3>HR & Recruitment</h3>
+                        <p>Talent acquisition, retention strategies, culture building & workforce planning</p>
+                    </div>
+                    <div class="biz-card" data-field="Operations" onclick="showField('Operations')">
+                        <div class="biz-card-icon"><i class="fa-solid fa-gears"></i></div>
+                        <h3>Operations</h3>
+                        <p>Supply chain, logistics, process optimization & quality management</p>
+                    </div>
+                    <div class="biz-card" data-field="Sales" onclick="showField('Sales')">
+                        <div class="biz-card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                        <h3>Sales</h3>
+                        <p>Pipeline management, CRM strategy, forecasting & deal closing techniques</p>
+                    </div>
+                </div>
+                <!-- Spacer for category icon visibility -->
+                <div class="biz-dashboard-spacer" style="height: 150px;"></div>
+            </section>
+
+            <!-- Field Section (hidden by default) -->
+            <section class="biz-field-section" id="biz-field-section" style="display:none;">
+                <div class="biz-field-header">
+                    <button class="biz-back-btn" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                    <h2 id="field-title">Finance</h2>
+                </div>
+                <div class="biz-quick-searches" id="quick-searches"></div>
+            </section>
+
+            <!-- Answer Area -->
+            <section class="biz-answer-area" id="biz-answer-area" style="display:none;">
+                <div class="biz-answer-card" id="biz-answer-card">
+                    <div class="biz-answer-header">
+                        <span class="biz-field-badge" id="answer-field-badge">Finance</span>
+                        <span class="biz-answer-query" id="answer-query">Query</span>
+                    </div>
+                    <div class="biz-sources-row" id="biz-sources-row"></div>
+                    <div class="biz-structured-answer" id="biz-structured-answer"></div>
+                    <div class="biz-answer-actions">
+                        <button class="biz-action-btn" id="save-report-btn" onclick="saveReport()">
+                            <i class="fa-solid fa-floppy-disk"></i> Save as Report
+                        </button>
+                        <button class="biz-action-btn" id="export-pdf-btn" onclick="exportPDF()">
+                            <i class="fa-solid fa-file-pdf"></i> Export PDF
+                        </button>
+                    </div>
+                    <div class="biz-related-chips" id="biz-related-chips"></div>
+                </div>
+                <!-- Bottom Spacer for visibility over fixed search bar -->
+                <div class="biz-answer-spacer" style="height: 250px;"></div>
+            </section>
+
+            <!-- Smart Search Bar -->
+            <section class="biz-search-section">
+                <div class="biz-search-container">
+                    <select class="biz-field-select" id="biz-field-select">
+                        <option value="General">All Fields</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Legal">Legal</option>
+                        <option value="HR & Recruitment">HR & Recruitment</option>
+                        <option value="Operations">Operations</option>
+                        <option value="Sales">Sales</option>
+                    </select>
+                    <input type="text" placeholder="Ask a business question..." id="biz-input">
+                    <button class="biz-search-btn" id="biz-search-btn" onclick="doBizSearch()">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div class="biz-loading" id="biz-loading" style="display:none;">
+                <div class="biz-loading-spinner"></div>
+                <span>Analyzing business data...</span>
+            </div>
+        </main>
+    </div>
+
+    <!-- Marked.js -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- jsPDF for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Business Logic -->
+    <script src="/static/business.js?v=1"></script>
+</body>
+</html>

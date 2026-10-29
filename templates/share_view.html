@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ search.query }} — Perplexity 3 Share</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .share-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+        .share-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .share-query {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+        .share-answer {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 24px;
+            backdrop-filter: var(--glass-blur);
+            line-height: 1.7;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+        .cta-footer {
+            margin-top: 60px;
+            text-align: center;
+        }
+        .cta-btn {
+            background: var(--btn-gradient);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+            transition: all 0.3s;
+        }
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(124, 58, 237, 0.5);
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="share-container">
+        <header class="share-header">
+            <div class="logo" style="margin-bottom: 30px; font-size: 28px;">Perplexity</div>
+            <div class="share-query">{{ search.query }}</div>
+            <div style="font-size: 14px; color: var(--text-secondary);">Published on {{ search.created_at }}</div>
+        </header>
+
+        <article class="share-answer" id="markdown-content"></article>
+
+        <div class="cta-footer">
+            <a href="/" class="cta-btn"><i class="fa-solid fa-magnifying-glass"></i> Try Perplexity 3</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var rawContent = `{{ search.answer | safe }}`;
+            document.getElementById('markdown-content').innerHTML = marked.parse(rawContent);
+        });
+    </script>
+</body>
+</html>

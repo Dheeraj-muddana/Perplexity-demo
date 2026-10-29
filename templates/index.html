@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perplexity 3 — AI Search Engine</title>
+    <meta name="description" content="Perplexity 3 AI Search Engine - Get cited, accurate answers powered by web search and Gemini AI.">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <button class="menu-btn" id="sidebar-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <span>Perplexity</span>
+                </div>
+            </div>
+            <div class="new-chat-btn" id="new-chat-btn">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-heading">Quick Access</div>
+                <div class="sidebar-links-menu">
+                    <a href="/saved" class="sidebar-menu-item"><i class="fa-solid fa-bookmark"></i><span>Saved Answers</span></a>
+                    <a href="/trending" class="sidebar-menu-item"><i class="fa-solid fa-bolt"></i><span>Trending</span></a>
+                </div>
+                <div class="sidebar-heading">Recent Threads</div>
+                <div id="history-list"></div>
+            </nav>
+            <div class="sidebar-links">
+                <div class="link-item"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div class="link-item"><i class="fa-solid fa-gear"></i></div>
+                <div class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Light/Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-nav">
+                <div class="nav-right">
+                    <!-- Business Mode -->
+                    <a href="/business" class="business-mode-btn" id="business-mode-btn" title="Business Intelligence">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </a>
+
+                    <!-- Notification Bell -->
+                    <div class="notif-wrapper" id="notif-bell">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="notif-badge" id="notif-count">0</span>
+                        <div class="notif-dropdown" id="notif-dropdown">
+                            <div class="notif-header">Notifications</div>
+                            <div id="notif-list" class="notif-list">
+                                <div class="notif-empty">No new notifications</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="upgrade-btn">
+                        <i class="fa-solid fa-star"></i>
+                        <span>Upgrade to Google AI Plus</span>
+                    </button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=M&background=0D8ABC&color=fff" alt="User Profile">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Hero Section -->
+            <section class="hero" id="hero-section">
+                <h1 class="greeting">Hi User</h1>
+                <p class="sub-greeting">I'm ready to help you plan, study, bring ideas to life and more.</p>
+            </section>
+
+            <!-- Chat History Area -->
+            <section class="chat-container" id="chat-container"></section>
+
+            <section class="search-section">
+                <!-- Search Progress Indicator -->
+                <div class="search-progress" id="search-progress">
+                    <div class="progress-step active" id="step-searching">
+                        <div class="progress-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                        <span>Searching the web...</span>
+                    </div>
+                    <div class="progress-step" id="step-reading">
+                        <div class="progress-icon"><i class="fa-solid fa-book-open"></i></div>
+                        <span>Reading sources...</span>
+                    </div>
+                    <div class="progress-step" id="step-writing">
+                        <div class="progress-icon"><i class="fa-solid fa-pen-fancy"></i></div>
+                        <span>Generating answer...</span>
+                    </div>
+                </div>
+
+                <!-- Status Indicator for PDF -->
+                <div class="status-indicator" id="upload-status">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Document Active: <b id="filename-display">None</b></span>
+                </div>
+
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <input type="file" id="pdf-upload" accept=".pdf" style="display:none;">
+                        <button class="add-icon" id="add-file-btn" title="Upload PDF">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <input type="text" placeholder="Ask Perplexity 3" id="perplexity-input">
+                        <div class="search-controls">
+                            <!-- Public/Private Toggle -->
+                            <button class="privacy-toggle" id="privacy-toggle" title="Public/Private Search">
+                                <i class="fa-solid fa-lock"></i>
+                                <span>Private</span>
+                            </button>
+                            
+                            <button class="web-search-toggle active" id="web-search-toggle" title="Web Search">
+                                <i class="fa-solid fa-globe"></i>
+                                <span>Web</span>
+                            </button>
+                            <div class="fast-badge">Fast <i class="fa-solid fa-chevron-down"></i></div>
+                            <button class="mic-btn" id="mic-btn" title="Voice Search"><i class="fa-solid fa-microphone"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Chips -->
+                <div class="action-chips">
+                    <button class="chip"><i class="fa-solid fa-image"></i><span>Create image</span></button>
+                    <button class="chip"><i class="fa-solid fa-baseball"></i><span>Follow IPL</span></button>
+                    <button class="chip"><i class="fa-solid fa-guitar"></i><span>Create music</span></button>
+                    <button class="chip"><i class="fa-solid fa-graduation-cap"></i><span>Help me learn</span></button>
+                    <button class="chip"><i class="fa-solid fa-pen-nib"></i><span>Write anything</span></button>
+                    <button class="chip"><i class="fa-solid fa-bolt"></i><span>Boost my day</span></button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- PDF.js (legacy build - no module needed) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Main App Script -->
+    <script src="/static/script.js?v=10"></script>
+</body>
+</html>

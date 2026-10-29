@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Answers — Perplexity 3</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .bookmarks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .bookmark-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .bookmark-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .bookmark-title {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .bookmark-preview {
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .delete-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--accent-color);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="app-container">
+        <main class="main-content" style="padding: 40px 60px; overflow-y: auto;">
+            <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Search</a>
+            <h1 class="greeting" style="font-size: 48px; text-align: left;">Saved Answers</h1>
+            <p class="sub-greeting" style="margin: 0; text-align: left;">Your collection of important bookmarks.</p>
+            
+            <div id="bookmarks-container" class="bookmarks-grid">
+                <div class="loading">Loading your bookmarks...</div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var userId = localStorage.getItem('perplexity_user_id');
+            if (!userId) {
+                document.getElementById('bookmarks-container').innerHTML = '<p>No user ID found. Start searching to save answers!</p>';
+                return;
+            }
+
+            fetch('/api/bookmarks?user_id=' + userId)
+                .then(r => r.json())
+                .then(data => {
+                    var container = document.getElementById('bookmarks-container');
+                    container.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        container.innerHTML = '<p>No saved answers yet.</p>';
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        var card = document.createElement('div');
+                        card.className = 'bookmark-card';
+                        card.innerHTML = `
+                            <button class="delete-btn" onclick="deleteBookmark('${item.id}')"><i class="fa-solid fa-trash"></i></button>
+                            <div class="bookmark-title">${item.query}</div>
+                            <div class="bookmark-preview">${item.answer}</div>
+                            <div style="margin-top: 15px;"><a href="/share/${item.id}" target="_blank" style="color: var(--accent-color); text-decoration: none; font-size: 13px; font-weight: 600;">View Full Answer</a></div>
+                        `;
+                        container.appendChild(card);
+                    });
+                });
+        });
+
+        function deleteBookmark(id) {
+            var userId = localStorage.getItem('perplexity_user_id');
+            fetch('/api/bookmark', {
+                method: 'DELETE',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ user_id: userId, search_id: id })
+            }).then(() => location.reload());
+        }
+    </script>
+</body>
+</html>
